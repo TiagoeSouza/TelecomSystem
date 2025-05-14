@@ -1,0 +1,102 @@
+[
+    {
+        "id": "contrato-0001",
+        "filial": "Filial São Paulo",
+        "operadora": "Operadora 1",
+        "plano": "Plano Móvel 10GB",
+        "dataInicio": "2023-01-10",
+        "dataVencimento": "2025-01-10",
+        "valorMensal": 129.90,
+        "status": "Ativo"
+    },
+    {
+        "id": "contrato-0002",
+        "filial": "Filial Rio de Janeiro",
+        "operadora": "Operadora 3",
+        "plano": "Internet 300MB",
+        "dataInicio": "2022-05-15",
+        "dataVencimento": "2024-05-15",
+        "valorMensal": 189.00,
+        "status": "Inativo"
+    },
+    {
+        "id": "contrato-0003",
+        "filial": "Filial Belo Horizonte",
+        "operadora": "Operadora 5",
+        "plano": "Plano Fixo Ilimitado",
+        "dataInicio": "2024-02-01",
+        "dataVencimento": "2026-02-01",
+        "valorMensal": 79.99,
+        "status": "Ativo"
+    },
+    {
+        "id": "contrato-0004",
+        "filial": "Filial Curitiba",
+        "operadora": "Operadora 2",
+        "plano": "Fixo Empresarial",
+        "dataInicio": "2023-07-20",
+        "dataVencimento": "2025-07-20",
+        "valorMensal": 109.50,
+        "status": "Ativo"
+    },
+    {
+        "id": "contrato-0005",
+        "filial": "Filial Salvador",
+        "operadora": "Operadora 6",
+        "plano": "Internet 500MB",
+        "dataInicio": "2023-11-11",
+        "dataVencimento": "2025-11-11",
+        "valorMensal": 249.90,
+        "status": "Inativo"
+    },
+    {
+        "id": "contrato-0006",
+        "filial": "Filial Porto Alegre",
+        "operadora": "Operadora 7",
+        "plano": "TV Premium HD",
+        "dataInicio": "2024-03-05",
+        "dataVencimento": "2026-03-05",
+        "valorMensal": 99.00,
+        "status": "Ativo"
+    },
+    {
+        "id": "contrato-0007",
+        "filial": "Filial Brasília",
+        "operadora": "Operadora 8",
+        "plano": "Móvel 20GB + Ligações",
+        "dataInicio": "2022-09-18",
+        "dataVencimento": "2024-09-18",
+        "valorMensal": 159.90,
+        "status": "Inativo"
+    },
+    {
+        "id": "contrato-0008",
+        "filial": "Filial Fortaleza",
+        "operadora": "Operadora 9",
+        "plano": "Internet Gamer 1GB",
+        "dataInicio": "2023-06-01",
+        "dataVencimento": "2025-06-01",
+        "valorMensal": 299.90,
+        "status": "Ativo"
+    },
+    {
+        "id": "contrato-0009",
+        "filial": "Filial Recife",
+        "operadora": "Operadora 4",
+        "plano": "Plano Móvel 5GB",
+        "dataInicio": "2023-03-22",
+        "dataVencimento": "2024-03-22",
+        "valorMensal": 89.90,
+        "status": "Ativo"
+    },
+    {
+        "id": "contrato-0010",
+        "filial": "Filial Campinas",
+        "operadora": "Operadora 10",
+        "plano": "Fixo Corporativo Pro",
+        "dataInicio": "2024-04-10",
+        "dataVencimento": "2026-04-10",
+        "valorMensal": 119.00,
+        "status": "Ativo"
+    }
+]

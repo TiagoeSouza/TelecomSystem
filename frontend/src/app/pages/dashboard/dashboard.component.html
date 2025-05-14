@@ -1,0 +1,49 @@
+<div class="container-fluid">
+    <div class="row">
+        <!-- Card Total de Faturas -->
+        <div class="col-12 col-md-6 mt-2">
+            <div class="card shadow rounded h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Total de Faturas</h3>
+                    <h2 class="card-text">{{ totalFaturas }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Valor Total Faturado -->
+        <div class="col-12 col-md-6 mt-2">
+            <div class="card shadow rounded h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Valor Total Faturado</h3>
+                    <h2 class="card-text">{{ totalFaturado | currency:'BRL' }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row ">
+        <!-- Card Status das Faturas (Gráfico de Pizza) -->
+        <div class="col-12 col-md-6 mt-2">
+            <div class="card shadow rounded h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Status das Faturas</h3>
+                    <!-- <canvas baseChart [data]="pieChartData" [type]="pieChartType"></canvas> -->
+                    <canvas id="pieChart"></canvas>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Evolução Mensal (Gráfico de Barras) -->
+        <div class="col-12 col-md-6 mt-2">
+            <div class="card shadow rounded">
+                <div class="card-body">
+                    <h3 class="card-title">Evolução Mensal</h3>
+                    <!-- <canvas baseChart [data]="barChartData" [type]="barChartType"></canvas> -->
+                    <canvas id="barChart"></canvas>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

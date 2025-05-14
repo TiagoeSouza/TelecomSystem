@@ -1,0 +1,44 @@
+<div class="container-fluid" *ngIf="!loading; else carregando">
+    <h3>{{ editId ? 'Editar' : 'Nova' }} Operadora</h3>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+            <label class="form-label">Nome da Operadora</label>
+            <input type="text" class="form-control" formControlName="nome" />
+            <div class="text-danger" *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched">
+                <small *ngIf="form.get('nome')?.errors?.['required']">Nome é obrigatório.</small>
+                <small *ngIf="form.get('nome')?.errors?.['minlength']">Mínimo de 5 caracteres.</small>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Tipo de Serviço</label>
+            <select class="form-select" formControlName="tipoServico">
+                <option value="Móvel">Móvel</option>
+                <option value="Fixo">Fixo</option>
+                <option value="Internet">Internet</option>
+            </select>
+            <div class="text-danger" *ngIf="form.get('tipoServico')?.invalid && form.get('tipoServico')?.touched">
+                <small *ngIf="form.get('tipoServico')?.errors?.['required']">Tipo de serviço é obrigatório.</small>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Contato de Suporte</label>
+            <input type="text" class="form-control" formControlName="contato" />
+            <div class="text-danger" *ngIf="form.get('contato')?.invalid && form.get('contato')?.touched">
+                <small *ngIf="form.get('contato')?.errors?.['required']">Contato é obrigatório.</small>
+                <small *ngIf="form.get('contato')?.errors?.['minlength']">Mínimo de 5 caracteres.</small>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            {{ editId ? 'Atualizar' : 'Cadastrar' }}
+        </button>
+        <a routerLink="/operadoras" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+
+<ng-template #carregando>
+    <div class="text-center mt-4">Carregando...</div>
+</ng-template>

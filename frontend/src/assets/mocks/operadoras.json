@@ -1,0 +1,62 @@
+[
+    {
+        "id": "guid-1234",
+        "nome": "Operadora 1",
+        "tipoServico": "Móvel",
+        "contato": "0000-5590"
+    },
+    {
+        "id": "guid-1235",
+        "nome": "Operadora 2",
+        "tipoServico": "Fixo",
+        "contato": "5461-1044"
+    },
+    {
+        "id": "guid-1236",
+        "nome": "Operadora 3",
+        "tipoServico": "Internet",
+        "contato": "1212-3125"
+    },
+    {
+        "id": "guid-1237",
+        "nome": "Operadora 4",
+        "tipoServico": "Móvel",
+        "contato": "54214-5541"
+    },
+    {
+        "id": "guid-1238",
+        "nome": "Operadora 5",
+        "tipoServico": "Fixo",
+        "contato": "Não Informado"
+    },
+    {
+        "id": "guid-1239",
+        "nome": "Operadora 6",
+        "tipoServico": "Internet",
+        "contato": "Não Informado"
+    },
+    {
+        "id": "guid-1240",
+        "nome": "Operadora 7",
+        "tipoServico": "TV",
+        "contato": "3210-1234"
+    },
+    {
+        "id": "guid-1241",
+        "nome": "Operadora 8",
+        "tipoServico": "Móvel",
+        "contato": "9999-8888"
+    },
+    {
+        "id": "guid-1242",
+        "nome": "Operadora 9",
+        "tipoServico": "Internet",
+        "contato": "4002-8922"
+    },
+    {
+        "id": "guid-1243",
+        "nome": "Operadora 10",
+        "tipoServico": "Fixo",
+        "contato": "3131-3131"
+    }
+]

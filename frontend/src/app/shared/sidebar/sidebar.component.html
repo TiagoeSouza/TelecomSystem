@@ -1,0 +1,59 @@
+<div class="d-flex flex-column vh-100 text-white bg-system p-3" [ngClass]="{ 'collapsed': isCollapsed }"
+    style="width: 250px; transition: width 0.3s;">
+
+    <div class="d-flex align-items-center mb-2">
+        <!-- Ícone Hamburguer (toggle sidebar) -->
+        <button class="btn btn-outline-light btn-sm me-3" (click)="toggleSidebar()">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <!-- Nome/logo do sistema -->
+        <a class="navbar-brand mb-0 h1" href="/dashboard"> &nbsp;&nbsp;Gestão TelecomSystem</a>
+    </div>
+    <hr class="m-0" />
+
+    <!-- <div>
+        <a class="navbar-brand" href="/dashboard">Gestão TelecomSystem</a>
+
+        <div class="text-end">
+            <button class="btn btn-outline-light btn-sm" (click)="toggleSidebar()">
+                <i class="bi" [ngClass]="isCollapsed ? 'bi-arrow-right-circle' : 'bi-arrow-left-circle'"></i>
+            </button>
+        </div>
+    </div> -->
+
+    <ul class="nav nav-pills flex-column mb-auto mt-2">
+        <li>
+            <a routerLink="/dashboard" class="nav-link text-white" routerLinkActive="active"
+                style="border-radius: 0px;">
+                <i class="bi bi-speedometer me-2"></i>
+                <span *ngIf="!isCollapsed">Dashboard</span>
+            </a>
+        </li>
+        <hr class="m-0" />
+        <li>
+            <a routerLink="/operadoras" class="nav-link text-white" routerLinkActive="active"
+                style="border-radius: 0px;">
+                <i class="bi bi-building me-2"></i>
+                <span *ngIf="!isCollapsed">Operadoras</span>
+            </a>
+        </li>
+        <hr class="m-0" />
+
+        <li>
+            <a routerLink="/contratos" class="nav-link text-white" routerLinkActive="active"
+                style="border-radius: 0px;">
+                <i class="bi bi-file-earmark-text me-2"></i>
+                <span *ngIf="!isCollapsed">Contratos</span>
+            </a>
+        </li>
+        <hr class="m-0" />
+
+        <li>
+            <a routerLink="/faturas" class="nav-link text-white" routerLinkActive="active" style="border-radius: 0px;">
+                <i class="bi bi-receipt me-2"></i>
+                <span *ngIf="!isCollapsed">Faturas</span>
+            </a>
+        </li>
+    </ul>
+</div>

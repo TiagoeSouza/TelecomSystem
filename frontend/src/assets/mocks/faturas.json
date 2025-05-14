@@ -1,0 +1,114 @@
+[
+    {
+        "id": "fatura-0001",
+        "contratoId": "contrato-0001",
+        "dataEmissao": "2023-01-01",
+        "dataVencimento": "2023-01-31",
+        "valorCobrado": 129.90,
+        "status": "Paga"
+    },
+    {
+        "id": "fatura-0002",
+        "contratoId": "contrato-0001",
+        "dataEmissao": "2023-02-01",
+        "dataVencimento": "2023-02-28",
+        "valorCobrado": 129.90,
+        "status": "Paga"
+    },
+    {
+        "id": "fatura-0003",
+        "contratoId": "contrato-0002",
+        "dataEmissao": "2022-05-01",
+        "dataVencimento": "2022-05-31",
+        "valorCobrado": 189.00,
+        "status": "Atrasada"
+    },
+    {
+        "id": "fatura-0004",
+        "contratoId": "contrato-0002",
+        "dataEmissao": "2022-06-01",
+        "dataVencimento": "2022-06-30",
+        "valorCobrado": 189.00,
+        "status": "Paga"
+    },
+    {
+        "id": "fatura-0005",
+        "contratoId": "contrato-0003",
+        "dataEmissao": "2024-02-01",
+        "dataVencimento": "2024-02-28",
+        "valorCobrado": 79.99,
+        "status": "Paga"
+    },
+    {
+        "id": "fatura-0006",
+        "contratoId": "contrato-0004",
+        "dataEmissao": "2023-08-01",
+        "dataVencimento": "2023-08-31",
+        "valorCobrado": 109.50,
+        "status": "Paga"
+    },
+    {
+        "id": "fatura-0007",
+        "contratoId": "contrato-0004",
+        "dataEmissao": "2023-09-01",
+        "dataVencimento": "2023-09-30",
+        "valorCobrado": 109.50,
+        "status": "Paga"
+    },
+    {
+        "id": "fatura-0008",
+        "contratoId": "contrato-0005",
+        "dataEmissao": "2023-11-01",
+        "dataVencimento": "2023-11-30",
+        "valorCobrado": 249.90,
+        "status": "Pendente"
+    },
+    {
+        "id": "fatura-0009",
+        "contratoId": "contrato-0006",
+        "dataEmissao": "2024-03-01",
+        "dataVencimento": "2024-03-31",
+        "valorCobrado": 99.00,
+        "status": "Paga"
+    },
+    {
+        "id": "fatura-0010",
+        "contratoId": "contrato-0007",
+        "dataEmissao": "2024-04-01",
+        "dataVencimento": "2024-04-30",
+        "valorCobrado": 159.90,
+        "status": "Pendente"
+    },
+    {
+        "id": "fatura-0011",
+        "contratoId": "contrato-0007",
+        "dataEmissao": "2024-05-01",
+        "dataVencimento": "2024-05-31",
+        "valorCobrado": 159.90,
+        "status": "Pendente"
+    },
+    {
+        "id": "fatura-0012",
+        "contratoId": "contrato-0008",
+        "dataEmissao": "2023-06-01",
+        "dataVencimento": "2023-06-30",
+        "valorCobrado": 299.90,
+        "status": "Paga"
+    },
+    {
+        "id": "fatura-0013",
+        "contratoId": "contrato-0009",
+        "dataEmissao": "2023-04-01",
+        "dataVencimento": "2023-04-30",
+        "valorCobrado": 89.90,
+        "status": "Paga"
+    },
+    {
+        "id": "fatura-0014",
+        "contratoId": "contrato-0010",
+        "dataEmissao": "2024-04-01",
+        "dataVencimento": "2024-04-30",
+        "valorCobrado": 119.00,
+        "status": "Pendente"
+    }
+]

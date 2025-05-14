@@ -1,0 +1,69 @@
+<div class="container-fluid d-flex flex-column" style="min-height: 62vh;">
+    <!-- <h3>Operadoras</h3> -->
+    <h3>Lista de Operadoras</h3>
+
+    <div class="row">
+        <div class="col-11">
+            <div class="mb-3">
+                <label for="search" class="form-label">Pesquisar</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Buscar por nome ou tipo..."
+                        [(ngModel)]="filtro" (input)="onBuscaChange()" />
+                    <button class="btn btn-primary" type="button" (click)="limparFiltro()">Limpar</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-1 text-end mt-4">
+            <a routerLink="/operadoras/novo" [title]="'Adicionar nova operadora'" [className]="'btn btn-primary mb-3'"
+                style="border-radius: 50%; width: 50px; height: 50px;">
+                <i class="bi bi-plus-lg" style="font-size: 24px;"></i>
+            </a>
+        </div>
+    </div>
+
+    <div *ngIf="loading">Carregando...</div>
+
+    <div *ngIf="!loading && operadoras.length === 0">
+        <p>Nenhuma operadora encontrada.</p>
+    </div>
+
+    <div *ngIf="!loading && operadoras.length > 0" class="flex-grow-1 d-flex flex-column">
+        <!-- Campo de pesquisa -->
+
+
+        <!-- Tabela -->
+        <div class="flex-grow-1">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Contato</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let op of operadorasPaginadas">
+                        <td>{{ op.nome }}</td>
+                        <td>{{ op.tipoServico }}</td>
+                        <td>{{ op.contato }}</td>
+                        <td>
+                            <a class="btn btn-sm btn-warning" [routerLink]="['/operadoras', op.id]"><i
+                                    class="bi bi-pencil-square"></i></a>
+                            <button class="btn btn-sm btn-danger ms-2" (click)="remover(op.id)"><i
+                                    class="bi bi-trash3"></i></button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginação sempre ao final -->
+        <div>
+            <app-pagination [totalItems]="operadorasFiltradas.length" [pageSize]="pageSize" [page]="page"
+                (pageChange)="page = $event" />
+        </div>
+    </div>
+</div>
