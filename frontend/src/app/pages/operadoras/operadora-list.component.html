@@ -4,18 +4,20 @@
 
     <div class="row">
         <div class="col-11">
-            <div class="mb-3">
-                <label for="search" class="form-label">Pesquisar</label>
+            <div class="mb-3 mt-1">
                 <div class="input-group">
+                    <span class="input-group-text " id="search-label">Pesquisar</span>
                     <input type="text" class="form-control" placeholder="Buscar por nome ou tipo..."
-                        [(ngModel)]="filtro" (input)="onBuscaChange()" />
-                    <button class="btn btn-primary" type="button" (click)="limparFiltro()">Limpar</button>
+                        aria-label="Pesquisar" aria-describedby="search-label" [(ngModel)]="filtro"
+                        (input)="onBuscaChange()" />
+                    <button class="btn btn-primary" type="button" (click)="limparFiltro()">
+                        Limpar
+                    </button>
                 </div>
             </div>
-
         </div>
 
-        <div class="col-1 text-end mt-4">
+        <div class="col-1 text-end ">
             <a routerLink="/operadoras/novo" [title]="'Adicionar nova operadora'" [className]="'btn btn-primary mb-3'"
                 style="border-radius: 50%; width: 50px; height: 50px;">
                 <i class="bi bi-plus-lg" style="font-size: 24px;"></i>
