@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "TelecomSystem.API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/TelecomSystem.API/bin/Debug/net8.0/TelecomSystem.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/TelecomSystem.API",
+            "stopAtEntry": false,
+            // "serverReadyAction": {
+            //     "action": "openExternally",
+            //     "pattern": "\\bNow listening on:\\s+(http://\\S+)"
+            // },
+            "launchBrowser": {
+                "enabled": true,
+                "args": "http://localhost:5009/swagger"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/TelecomSystem.API/Views"
+            }
+        }
+    ]
+}
