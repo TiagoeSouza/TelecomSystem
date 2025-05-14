@@ -12,7 +12,7 @@ using TelecomSystem.Infrastructure;
 namespace TelecomSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(TelecomDbContext))]
-    [Migration("20250514182127_InitialCreate")]
+    [Migration("20250514224531_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -37,9 +37,8 @@ namespace TelecomSystem.Infrastructure.Migrations
                     b.Property<DateTime>("DataVencimento")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("NomeFilial")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("FilialId")
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("OperadoraId")
                         .HasColumnType("uuid");
@@ -55,6 +54,8 @@ namespace TelecomSystem.Infrastructure.Migrations
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FilialId");
 
                     b.HasIndex("OperadoraId");
 
@@ -89,6 +90,21 @@ namespace TelecomSystem.Infrastructure.Migrations
                     b.ToTable("Faturas");
                 });
 
+            modelBuilder.Entity("TelecomSystem.Domain.Entities.Filial", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Filial");
+                });
+
             modelBuilder.Entity("TelecomSystem.Domain.Entities.Operadora", b =>
                 {
                     b.Property<Guid>("Id")
@@ -113,11 +129,19 @@ namespace TelecomSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("TelecomSystem.Domain.Entities.Contrato", b =>
                 {
+                    b.HasOne("TelecomSystem.Domain.Entities.Filial", "Filial")
+                        .WithMany()
+                        .HasForeignKey("FilialId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("TelecomSystem.Domain.Entities.Operadora", "Operadora")
                         .WithMany()
                         .HasForeignKey("OperadoraId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Filial");
 
                     b.Navigation("Operadora");
                 });

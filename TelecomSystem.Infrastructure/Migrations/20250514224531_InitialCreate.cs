@@ -12,6 +12,18 @@ namespace TelecomSystem.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Filial",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    Nome = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Filial", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Operadoras",
                 columns: table => new
                 {
@@ -30,7 +42,7 @@ namespace TelecomSystem.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    NomeFilial = table.Column<string>(type: "text", nullable: false),
+                    FilialId = table.Column<Guid>(type: "uuid", nullable: false),
                     OperadoraId = table.Column<Guid>(type: "uuid", nullable: false),
                     PlanoContratado = table.Column<string>(type: "text", nullable: false),
                     DataInicio = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -41,6 +53,12 @@ namespace TelecomSystem.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Contratos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Contratos_Filial_FilialId",
+                        column: x => x.FilialId,
+                        principalTable: "Filial",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Contratos_Operadoras_OperadoraId",
                         column: x => x.OperadoraId,
@@ -72,6 +90,11 @@ namespace TelecomSystem.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Contratos_FilialId",
+                table: "Contratos",
+                column: "FilialId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Contratos_OperadoraId",
                 table: "Contratos",
                 column: "OperadoraId");
@@ -90,6 +113,9 @@ namespace TelecomSystem.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Contratos");
+
+            migrationBuilder.DropTable(
+                name: "Filial");
 
             migrationBuilder.DropTable(
                 name: "Operadoras");

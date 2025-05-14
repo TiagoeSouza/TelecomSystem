@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { OperadoraService } from './operadora.service';
 import { Operadora } from '../../models/operadora.model';
+import { NotificationService } from '../../shared/notification/notification.service';
 
 @Component({
   selector: 'app-operadora-form',
@@ -22,14 +23,16 @@ export class OperadoraFormComponent implements OnInit {
     private fb: FormBuilder,
     private service: OperadoraService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notify: NotificationService
   ) { }
 
   ngOnInit() {
     this.form = this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(5)]],
+      id: ['', [Validators.required]],
+      nome: ['', [Validators.required, Validators.minLength(3)]],
       tipoServico: ['', Validators.required],
-      contato: ['', [Validators.required, Validators.minLength(5)]]
+      contatoSuporte: ['', [Validators.required, Validators.minLength(5)]]
     });
 
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -59,9 +62,18 @@ export class OperadoraFormComponent implements OnInit {
       ? this.service.update(this.editId, operadoraData)
       : this.service.add(operadoraData);
 
-    obs.subscribe(() => {
-      this.loading = false;
-      this.router.navigate(['/operadoras']);
+    obs.subscribe({
+      next: () => {
+        this.loading = false;
+        this.notify.success(this.editId ? 'Operadora atualizada com sucesso.' : 'Operadora criada com sucesso.');
+        this.router.navigate(['/operadoras']);
+      },
+      error: (err) => {
+        this.loading = false;
+        console.error('Erro ao salvar operadora:', err);
+        this.notify.error('Erro ao salvar a operadora. Tente novamente.');
+      }
     });
+
   }
 }

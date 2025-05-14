@@ -19,8 +19,8 @@ public class ContratoRepository : IContratoRepository
 
     public async Task<Contrato> ObterPorIdAsync(Guid id)
     {
-        return await _context.Contratos.Include(c => c.Operadora).FirstOrDefaultAsync(c => c.Id == id) ?? new Contrato();
-        //?? throw new InvalidOperationException("Contrato não encontrado");
+        return await _context.Contratos.Include(c => c.Operadora).FirstOrDefaultAsync(c => c.Id == id)
+               ?? throw new InvalidOperationException("Contrato não encontrado");
     }
 
     public async Task CriarAsync(Contrato contrato)

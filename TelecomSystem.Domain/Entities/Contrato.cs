@@ -2,7 +2,8 @@
 public class Contrato
 {
     public Guid Id { get; set; }
-    public string NomeFilial { get; set; }
+
+    public Filial Filial { get; set; }
     public Guid OperadoraId { get; set; }
     public Operadora Operadora { get; set; }
     public string PlanoContratado { get; set; }

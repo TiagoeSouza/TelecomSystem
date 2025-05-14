@@ -19,7 +19,8 @@ public class FaturaRepository : IFaturaRepository
 
     public async Task<Fatura> ObterPorIdAsync(Guid id)
     {
-        return await _context.Set<Fatura>().FindAsync(id) ?? new Fatura();
+        var fatura = await _context.Set<Fatura>().FindAsync(id);
+        return fatura ?? throw new InvalidOperationException("Fatura not found.");
     }
 
     public async Task CriarAsync(Fatura fatura)

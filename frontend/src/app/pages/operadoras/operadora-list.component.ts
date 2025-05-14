@@ -9,6 +9,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PaginationComponent } from '../../shared/pagination/pagination.component';
 import { NotificationService } from '../../shared/notification/notification.service';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { get } from 'http';
+import { filter, switchMap, catchError, of } from 'rxjs';
 
 
 @Component({
@@ -43,12 +45,12 @@ export class OperadoraListComponent implements OnInit {
   constructor(private service: OperadoraService, private modalService: NgbModal, private notify: NotificationService) { }
 
   ngOnInit() {
-    this.load();
+    this.load(true);
   }
 
-  load() {
+  load(force = false) {
     this.loading = true;
-    this.service.getAll().subscribe(data => {
+    this.service.getAll(force).subscribe(data => {
       this.operadoras = data;
       this.loading = false;
     });
@@ -61,10 +63,45 @@ export class OperadoraListComponent implements OnInit {
 
     modalRef.result
       .then((confirmed) => {
-        if (confirmed) {
-          this.operadoras = this.operadoras.filter(o => o.id !== id);
-          this.notify.success('Operadora excluída com sucesso.');
+        if (!confirmed) {
+          this.notify.info('Exclusão cancelada.');
+          return;
         }
+
+        // Primeiro tento buscar a operadora
+        this.service.getById(id).pipe(
+          catchError((error) => {
+            if (error.status === 404) {
+              this.notify.warning('Operadora não encontrada.');
+            } else {
+              this.notify.error('Erro ao buscar a operadora.');
+            }
+            return of(null); // Retorno null para interromper o fluxo
+          }),
+          switchMap((operadora) => {
+            // Se a operadora for null, não devo excluir
+            if (!operadora) {
+              return of(null); // Retorno null para interromper
+            }
+            return this.service.delete(id); // Caso contrário, tento excluir
+          }),
+          catchError((error) => {
+            // Caso apresente erro no delete mostro mensagem
+            this.notify.error('Erro ao excluir a operadora.');
+            return of(false); // Retorno falso indicando falha
+          })
+        ).subscribe((result) => {
+          if (result === true) {
+            this.operadoras = this.operadoras.filter(o => o.id !== id);
+            this.notify.success('Operadora excluída com sucesso.');
+          } else if (result === null) {
+            // Caso a operadora não tenha sido encontrada apresdento mensagem em tela
+            this.notify.error('Operadora não encontrada.');
+          } else {
+            // Caso erro inesperado
+            this.notify.error('Erro ao excluir a operadora.');
+          }
+        });
       })
       .catch(() => {
         this.notify.info('Exclusão cancelada.');
@@ -72,12 +109,19 @@ export class OperadoraListComponent implements OnInit {
   }
 
   onBuscaChange() {
-    this.page = 1; // Reinicia para a primeira página ao buscar
+    this.page = 1;
   }
 
-  // Método para limpar o filtro
+  // Método para limpar/atualizar o filtro/tela
   limparFiltro(): void {
-    this.filtro = '';  // Limpa o filtro
-    this.onBuscaChange();  // Chama a função de busca para atualizar a exibição
+    this.filtro = '';
+    this.page = 1;
+    this.load(true);
   }
+
+  onPageChange(newPage: number) {
+    this.page = newPage;
+  }
+
+
 }

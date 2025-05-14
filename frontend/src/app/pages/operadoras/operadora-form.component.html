@@ -5,6 +5,7 @@
         <div class="mb-3">
             <label class="form-label">Nome da Operadora</label>
             <input type="text" class="form-control" formControlName="nome" />
+            <input type="hidden" formControlName="id" />
             <div class="text-danger" *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched">
                 <small *ngIf="form.get('nome')?.errors?.['required']">Nome é obrigatório.</small>
                 <small *ngIf="form.get('nome')?.errors?.['minlength']">Mínimo de 5 caracteres.</small>
@@ -25,10 +26,10 @@
 
         <div class="mb-3">
             <label class="form-label">Contato de Suporte</label>
-            <input type="text" class="form-control" formControlName="contato" />
-            <div class="text-danger" *ngIf="form.get('contato')?.invalid && form.get('contato')?.touched">
-                <small *ngIf="form.get('contato')?.errors?.['required']">Contato é obrigatório.</small>
-                <small *ngIf="form.get('contato')?.errors?.['minlength']">Mínimo de 5 caracteres.</small>
+            <input type="text" class="form-control" formControlName="contatoSuporte" />
+            <div class="text-danger" *ngIf="form.get('contatoSuporte')?.invalid && form.get('contatoSuporte')?.touched">
+                <small *ngIf="form.get('contatoSuporte')?.errors?.['required']">Contato é obrigatório.</small>
+                <small *ngIf="form.get('contatoSuporte')?.errors?.['minlength']">Mínimo de 5 caracteres.</small>
             </div>
         </div>
 

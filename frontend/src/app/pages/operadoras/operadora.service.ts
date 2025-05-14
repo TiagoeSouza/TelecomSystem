@@ -1,54 +1,81 @@
 // src/app/operadoras/operadora.service.ts
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { catchError, delay, map, tap } from 'rxjs/operators';
 import { generateGUID, Operadora } from '../../models/operadora.model';
 import { HttpClient } from '@angular/common/http';
+import { ApiService } from '../../../ApiService';
 
 @Injectable({ providedIn: 'root' })
 export class OperadoraService {
     private operadoras: Operadora[] = [];
     private loaded = false;
 
-    constructor(private http: HttpClient) { }
+    constructor(private apiService: ApiService) { }
 
     private loadMock(): Observable<Operadora[]> {
-        return this.http.get<Operadora[]>('assets/mocks/operadoras.json').pipe(
+        // return this.http.get<Operadora[]>('assets/mocks/operadoras.json').pipe(
+        //     tap(data => {
+        //         this.operadoras = data;
+        //         this.loaded = true;
+        //     })
+        // );
+        return this.apiService.get<Operadora[]>('Operadoras').pipe(
             tap(data => {
                 this.operadoras = data;
                 this.loaded = true;
             })
         );
+
     }
 
-    getAll(): Observable<Operadora[]> {
-        if (this.loaded) {
-            return of([...this.operadoras]).pipe(delay(300));
+    getAll(force = false): Observable<Operadora[]> {
+        if (this.loaded && !force) {
+            return of([...this.operadoras]);
         }
-        return this.loadMock().pipe(delay(300));
+        return this.loadMock(); // que chama o backend
     }
 
     getById(id: string): Observable<Operadora | undefined> {
-        return of(this.operadoras.find(op => op.id === id)).pipe(delay(300));
+        const response = this.apiService.get<Operadora>(`Operadoras/${id}`).pipe(
+            catchError(() => of(undefined))
+        );
+        console.log('getById', response);
+        return response;
     }
 
     add(data: Omit<Operadora, 'id'>): Observable<Operadora> {
         const nova = { id: generateGUID(), ...data };
-        this.operadoras.push(nova);
-        return of(nova).pipe(delay(300));
+        return this.apiService.post<Operadora>('Operadoras', nova);
     }
+
 
     update(id: string, data: Omit<Operadora, 'id'>): Observable<Operadora | null> {
-        const index = this.operadoras.findIndex(op => op.id === id);
-        if (index > -1) {
-            this.operadoras[index] = { id, ...data };
-            return of(this.operadoras[index]).pipe(delay(300));
-        }
-        return of(null).pipe(delay(300));
+        return this.apiService.put<Operadora>(`Operadoras/${id}`, data).pipe(
+            catchError((error) => {
+                if (error.status === 404) {
+                    console.warn('Operadora não encontrada ao atualizar.');
+                    return of(null);
+                }
+                console.error('Erro ao atualizar a operadora', error);
+                throw error;
+            })
+        );
     }
 
-    delete(id: string): Observable<boolean> {
-        this.operadoras = this.operadoras.filter(op => op.id !== id);
-        return of(true).pipe(delay(300));
+
+    delete(id: string): Observable<boolean | null> {
+        return this.apiService.delete(`Operadoras/${id}`).pipe(
+            map(() => true),
+            catchError((error) => {
+                if (error.status === 404) {
+                    console.warn('Operadora não encontrada ao excluir.');
+                    return of(null); // null = não encontrada
+                }
+
+                console.error('Erro ao excluir a operadora', error);
+                return of(false); // false = erro inesperado
+            })
+        );
     }
 }

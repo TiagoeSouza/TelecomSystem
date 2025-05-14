@@ -9,6 +9,7 @@ namespace TelecomSystem.Infrastructure
     {
         public DbSet<Operadora> Operadoras { get; set; }
         public DbSet<Contrato> Contratos { get; set; }
+        public DbSet<Filial> Filial { get; set; }
         public DbSet<Fatura> Faturas { get; set; }
 
         public TelecomDbContext(DbContextOptions<TelecomDbContext> options) : base(options) { }

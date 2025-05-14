@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using TelecomSystem.Application.Interfaces;
 using TelecomSystem.Application.Services;
@@ -7,6 +8,16 @@ using TelecomSystem.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDev", policy =>
+    {
+        policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+    });
+});
+
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -14,7 +25,12 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<TelecomDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
 builder.Services.AddScoped<IOperadoraService, OperadoraService>();
 builder.Services.AddScoped<IContratoService, ContratoService>();
 builder.Services.AddScoped<IFaturaService, FaturaService>();
@@ -41,11 +57,13 @@ using (var scope = app.Services.CreateScope())
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors("AllowAngularDev");
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 else
 {
+    app.UseCors("ProductionCors"); // Caso seja publicado
     app.UseHttpsRedirection();
 }
 

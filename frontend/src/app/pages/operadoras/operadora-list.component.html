@@ -48,7 +48,7 @@
                     <tr *ngFor="let op of operadorasPaginadas">
                         <td>{{ op.nome }}</td>
                         <td>{{ op.tipoServico }}</td>
-                        <td>{{ op.contato }}</td>
+                        <td>{{ op.contatoSuporte }}</td>
                         <td>
                             <a class="btn btn-sm btn-warning" [routerLink]="['/operadoras', op.id]"><i
                                     class="bi bi-pencil-square"></i></a>
@@ -63,7 +63,7 @@
         <!-- Paginação sempre ao final -->
         <div>
             <app-pagination [totalItems]="operadorasFiltradas.length" [pageSize]="pageSize" [page]="page"
-                (pageChange)="page = $event" />
+                (pageChange)="onPageChange($event)" />
         </div>
     </div>
 </div>

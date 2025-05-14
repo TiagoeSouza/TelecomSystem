@@ -19,7 +19,8 @@ public class OperadoraRepository : IOperadoraRepository
 
     public async Task<Operadora> ObterPorIdAsync(Guid id)
     {
-        return await _context.Operadoras.FindAsync(id) ?? new Operadora();
+        return await _context.Operadoras.FindAsync(id)
+               ?? throw new InvalidOperationException("Operadora não encontrada");
     }
 
     public async Task CriarAsync(Operadora operadora)
@@ -30,6 +31,15 @@ public class OperadoraRepository : IOperadoraRepository
 
     public async Task AtualizarAsync(Operadora operadora)
     {
+        // Verifica se já existe uma entidade com esse ID sendo rastreada
+        var local = _context.Operadoras.Local.FirstOrDefault(e => e.Id == operadora.Id);
+        if (local != null)
+        {
+            // Desanexa a instância local
+            _context.Entry(local).State = EntityState.Detached;
+        }
+
+        // Agora atualiza com a nova instância
         _context.Operadoras.Update(operadora);
         await _context.SaveChangesAsync();
     }
