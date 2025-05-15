@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TelecomSystem.Application.Interfaces;
 using TelecomSystem.Domain.Entities;
@@ -5,6 +6,7 @@ using TelecomSystem.Domain.Entities;
 namespace TelecomSystem.API.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class OperadorasController : ControllerBase
     {

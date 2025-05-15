@@ -1,6 +1,8 @@
 using System.Net;
+using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using TelecomSystem.Application.Interfaces;
 using TelecomSystem.Application.Services;
 using TelecomSystem.Domain.Repositories;
@@ -16,6 +18,14 @@ builder.Services.AddCors(options =>
                 .AllowAnyHeader()
                 .AllowAnyMethod();
     });
+
+    options.AddPolicy("AllowLocalhostAnyPort", policy =>
+      {
+          policy.SetIsOriginAllowed(origin => origin.StartsWith("http://localhost"))
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+      });
 });
 
 // Add services to the container.
@@ -31,15 +41,46 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
+// Mapeia interfaces para suas implementações para uso com injeção de dependência.
+// AddScoped cria uma instância por requisição HTTP.
+// Necessário para que os serviços funcionem corretamente nos controllers.
 builder.Services.AddScoped<IOperadoraService, OperadoraService>();
 builder.Services.AddScoped<IContratoService, ContratoService>();
 builder.Services.AddScoped<IFaturaService, FaturaService>();
+builder.Services.AddScoped<IFilialService, FilialService>();
+builder.Services.AddScoped<IUserAuthService, UserAuthService>();
 
 builder.Services.AddScoped<IOperadoraRepository, OperadoraRepository>();
 builder.Services.AddScoped<IContratoRepository, ContratoRepository>();
 builder.Services.AddScoped<IFaturaRepository, FaturaRepository>();
+builder.Services.AddScoped<IFilialRepository, FilialRepository>();
+builder.Services.AddScoped<IUserAuthRepository, UserAuthRepository>();
+
+
+
+IConfigurationSection jwtSettings = builder.Configuration.GetSection("Jwt");
+string chave = jwtSettings["Key"]?.ToString() ?? throw new InvalidOperationException("JWT Não está configurado.");
+string issuer = jwtSettings["Issuer"]?.ToString() ?? throw new InvalidOperationException("JWT Não está configurado.");
+string audience = jwtSettings["Audience"]?.ToString() ?? throw new InvalidOperationException("JWT Não está configurado.");
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer("Bearer", options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(chave)),
+        };
+    });
+
+
 
 var app = builder.Build();
+
 using (var scope = app.Services.CreateScope())
 {
     // Executando o migration para criar o banco de dados
@@ -53,11 +94,13 @@ using (var scope = app.Services.CreateScope())
 }
 
 
-
+app.UseCors("AllowLocalhostAnyPort");
+app.UseAuthentication();
+app.UseAuthorization();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseCors("AllowAngularDev");
+    // app.UseCors("AllowAngularDev");
     app.UseSwagger();
     app.UseSwaggerUI();
 }

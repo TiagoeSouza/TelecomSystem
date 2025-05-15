@@ -29,13 +29,17 @@
 import { provideRouter, Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { AuthGuard } from './core/auth.guard';
+import { AuthGuard } from './services/auth.guard';
 import { EmptyLayoutComponent } from './layouts/logoff/logoff.component';
 import { FullLayoutComponent } from './layouts/logon/logon.component';
-import { ContratoFormComponent } from './pages/contratos/contrato-form.component';
-import { OperadoraFormComponent } from './pages/operadoras/operadora-form.component';
-import { FaturaFormComponent } from './pages/faturas/fatura-form.component';
-import { OperadoraListComponent } from './pages/operadoras/operadora-list.component';
+import { ContratoFormComponent } from './pages/contratos/contrato-form/contrato-form.component';
+import { OperadoraFormComponent } from './pages/operadoras/operadora-form/operadora-form.component';
+import { FaturaFormComponent } from './pages/faturas/fatura-form/fatura-form.component';
+import { OperadoraListComponent } from './pages/operadoras/operadora-list/operadora-list.component';
+import { FilialListComponent } from './pages/filiais/filial-list/filial-list.component';
+import { FilialFormComponent } from './pages/filiais/filial-form/filial-form.component';
+import { ContratoListComponent } from './pages/contratos/contrato-list/contrato-list.component';
+import { FaturaListComponent } from './pages/faturas/fatura-list/fatura-list.component';
 
 const routes: Routes = [
     {
@@ -43,15 +47,31 @@ const routes: Routes = [
         canActivate: [AuthGuard],
         component: FullLayoutComponent,
         children: [
+            // Rotas para o layout completo
             { path: '', pathMatch: 'full', redirectTo: 'home' },
+
+            // Rotas para a tela "inicial/dashboard"
             { path: 'dashboard', component: DashboardComponent },
 
+            // Rotas para o CRUD de Filiais
+            { path: 'filiais', component: FilialListComponent },
+            { path: 'filiais/novo', component: FilialFormComponent },
+            { path: 'filiais/:id', component: FilialFormComponent },
+
+            // Rotas para o CRUD de Operadoras
             { path: 'operadoras', component: OperadoraListComponent },
             { path: 'operadoras/novo', component: OperadoraFormComponent },
             { path: 'operadoras/:id', component: OperadoraFormComponent },
 
-            { path: 'contratos', component: ContratoFormComponent },
-            { path: 'faturas', component: FaturaFormComponent },
+            // Rotas para o CRUD de Contratos
+            { path: 'contratos', component: ContratoListComponent },
+            { path: 'contratos/novo', component: ContratoFormComponent },
+            { path: 'contratos/:id', component: ContratoFormComponent },
+
+            // Rotas para o CRUD de Faturas
+            { path: 'faturas', component: FaturaListComponent },
+            { path: 'faturas/novo', component: ContratoFormComponent },
+            { path: 'faturas/:id', component: ContratoFormComponent },
 
         ],
     },

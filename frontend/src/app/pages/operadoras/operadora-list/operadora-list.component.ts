@@ -2,15 +2,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { OperadoraService } from './operadora.service';
-import { Operadora } from '../../models/operadora.model';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { PaginationComponent } from '../../shared/pagination/pagination.component';
-import { NotificationService } from '../../shared/notification/notification.service';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { get } from 'http';
 import { filter, switchMap, catchError, of } from 'rxjs';
+import { Operadora } from '../../../models/operadora.model';
+import { OperadoraService } from '../../../services/operadora.service';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
+import { NotificationService } from '../../../shared/notification/notification.service';
+import { PaginationComponent } from '../../../shared/pagination/pagination.component';
 
 
 @Component({
@@ -50,9 +50,14 @@ export class OperadoraListComponent implements OnInit {
 
   load(force = false) {
     this.loading = true;
-    this.service.getAll(force).subscribe(data => {
-      this.operadoras = data;
-      this.loading = false;
+    this.service.getAll(force).subscribe({
+      next: (data) => {
+        this.operadoras = data;
+        this.loading = false;
+      }
+      , error: (error) => {
+        this.loading = false;
+      }
     });
   }
 

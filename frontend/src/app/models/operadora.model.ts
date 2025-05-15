@@ -5,8 +5,3 @@ export interface Operadora {
     contatoSuporte: string;
 
 }
-
-// Utilitário opcional para gerar GUID
-export function generateGUID() {
-    return crypto.randomUUID();
-}

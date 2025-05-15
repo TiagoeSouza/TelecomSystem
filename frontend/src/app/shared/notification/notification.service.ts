@@ -5,19 +5,39 @@ import { ToastrService } from 'ngx-toastr';
 export class NotificationService {
     constructor(private toastr: ToastrService) { }
 
-    success(msg: string, title = 'Sucesso') {
-        this.toastr.success(msg, title);
+    private showToast(
+        type: 'success' | 'error' | 'warning' | 'info',
+        msg: string,
+        title: string,
+        center: boolean
+    ) {
+        const originalPosition = this.toastr.toastrConfig.positionClass;
+
+        if (center) {
+            this.toastr.toastrConfig.positionClass = 'toast-center';
+        }
+
+        this.toastr[type](msg, title);
+
+        if (center) {
+            this.toastr.toastrConfig.positionClass = originalPosition;
+        }
     }
 
-    error(msg: string, title = 'Erro') {
-        this.toastr.error(msg, title);
+
+    success(msg: string, title = 'Sucesso', center = false) {
+        this.showToast('success', msg, title, center);
     }
 
-    warning(msg: string, title = 'Atenção') {
-        this.toastr.warning(msg, title);
+    error(msg: string, title = 'Erro', center = false) {
+        this.showToast('error', msg, title, center);
     }
 
-    info(msg: string, title = 'Informação') {
-        this.toastr.info(msg, title);
+    warning(msg: string, title = 'Atenção', center = false) {
+        this.showToast('warning', msg, title, center);
+    }
+
+    info(msg: string, title = 'Informação', center = false) {
+        this.showToast('info', msg, title, center);
     }
 }

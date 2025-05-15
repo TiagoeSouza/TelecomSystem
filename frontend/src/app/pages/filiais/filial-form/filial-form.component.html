@@ -1,0 +1,36 @@
+<div class="container-fluid" *ngIf="!loading; else carregando">
+    <h3>{{ editId ? 'Editar' : 'Nova' }} Filial</h3>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <div class="mb-3">
+            <!-- Crie campo para cnpj igual o campo abaixo -->
+            <label class="form-label">CNPJ</label>
+            <input type="text" class="form-control" formControlName="cnpj" mask="00.000.000/0000-00" />
+            <input type="hidden" formControlName="id" />
+
+            <div class="text-danger" *ngIf="form.get('cnpj')?.invalid && form.get('cnpj')?.touched">
+                <small *ngIf="form.get('cnpj')?.errors?.['required']">CNPJ é obrigatório.</small>
+                <small *ngIf="form.get('cnpj')?.errors?.['cnpjInvalido']">CNPJ inválido.</small>
+            </div>
+
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Nome da Filial</label>
+            <input type="text" class="form-control" formControlName="nome" />
+            <div class="text-danger" *ngIf="form.get('nome')?.invalid && form.get('nome')?.touched">
+                <small *ngIf="form.get('nome')?.errors?.['required']">Nome é obrigatório.</small>
+                <small *ngIf="form.get('nome')?.errors?.['minlength']">Mínimo de 10 caracteres.</small>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            {{ editId ? 'Atualizar' : 'Cadastrar' }}
+        </button>
+        <a routerLink="/filiais" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+
+<ng-template #carregando>
+    <div class="text-center mt-4">Carregando...</div>
+</ng-template>

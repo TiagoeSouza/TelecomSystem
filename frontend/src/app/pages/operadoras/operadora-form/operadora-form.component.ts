@@ -3,9 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { OperadoraService } from './operadora.service';
-import { Operadora } from '../../models/operadora.model';
-import { NotificationService } from '../../shared/notification/notification.service';
+import { OperadoraService } from '../../../services/operadora.service';
+import { Operadora } from '../../../models/operadora.model';
+import { NotificationService } from '../../../shared/notification/notification.service';
 
 @Component({
   selector: 'app-operadora-form',

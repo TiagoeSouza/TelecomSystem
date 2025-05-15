@@ -9,8 +9,9 @@ namespace TelecomSystem.Infrastructure
     {
         public DbSet<Operadora> Operadoras { get; set; }
         public DbSet<Contrato> Contratos { get; set; }
-        public DbSet<Filial> Filial { get; set; }
+        public DbSet<Filial> Filiais { get; set; }
         public DbSet<Fatura> Faturas { get; set; }
+        public DbSet<UserAuth> UserAuths { get; set; }
 
         public TelecomDbContext(DbContextOptions<TelecomDbContext> options) : base(options) { }
 
@@ -44,6 +45,16 @@ namespace TelecomSystem.Infrastructure
 
                         context.SaveChanges();
                     }
+
+                    //// TODO: Descomentar após implementar a autenticação
+                    // if (!context.UserAuth.Any())
+                    // {
+                    //     // Adicionando dados iniciais para autenticação
+                    //     context.UserAuth.AddRange(
+                    //         new UserAuth { Id = Guid.NewGuid(), UserEmail = "tiago_e_souza@hotmail.com", Password = "123456" },
+                    //     );
+                    //     context.SaveChanges();
+                    // }
                 }
                 catch (Exception ex)
                 {

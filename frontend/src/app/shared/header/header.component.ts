@@ -13,6 +13,8 @@ export class HeaderComponent {
     user: string | null = localStorage.getItem('userName');
     logout() {
         localStorage.removeItem('token');
+        localStorage.removeItem('userName');
+        this.user = null;
         this.router.navigateByUrl('/login');
     }
 }

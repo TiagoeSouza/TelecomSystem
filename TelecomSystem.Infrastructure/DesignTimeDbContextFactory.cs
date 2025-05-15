@@ -5,6 +5,8 @@ using System.IO;
 
 namespace TelecomSystem.Infrastructure
 {
+    // Criado para permitir a criação de migrações e o uso do comando Update-Database no Package Manage
+    // Isso é útil para criar migrações e atualizar o banco de dados sem precisar executar a aplicação.
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<TelecomDbContext>
     {
         public TelecomDbContext CreateDbContext(string[] args)

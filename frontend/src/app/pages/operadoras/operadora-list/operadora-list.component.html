@@ -1,4 +1,4 @@
-<div class="container-fluid d-flex flex-column" style="min-height: 62vh;">
+<div class="container-fluid d-flex flex-column" style="min-height: 65vh;">
     <!-- <h3>Operadoras</h3> -->
     <h3>Lista de Operadoras</h3>
 
@@ -37,21 +37,21 @@
 
         <!-- Tabela -->
         <div class="flex-grow-1">
-            <table class="table table-striped">
+            <table class="table table-striped table-fixed w-100">
                 <thead>
                     <tr>
-                        <th>Nome</th>
-                        <th>Tipo</th>
-                        <th>Contato</th>
-                        <th>Ações</th>
+                        <th style="width: 25%;">Nome</th>
+                        <th style="width: 25%;">Tipo</th>
+                        <th style="width: 30%;">Contato</th>
+                        <th style="width: 20%;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let op of operadorasPaginadas">
-                        <td>{{ op.nome }}</td>
-                        <td>{{ op.tipoServico }}</td>
-                        <td>{{ op.contatoSuporte }}</td>
-                        <td>
+                        <td class="text-truncate">{{ op.nome }}</td>
+                        <td class="text-truncate">{{ op.tipoServico }}</td>
+                        <td class="text-truncate">{{ op.contatoSuporte }}</td>
+                        <td class="text-truncate">
                             <a class="btn btn-sm btn-warning" [routerLink]="['/operadoras', op.id]"><i
                                     class="bi bi-pencil-square"></i></a>
                             <button class="btn btn-sm btn-danger ms-2" (click)="remover(op.id)"><i

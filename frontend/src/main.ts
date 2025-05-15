@@ -6,7 +6,9 @@ import { AppComponent } from './app/app.component';
 import { appRoutes } from './app/app.routes';
 import { provideToastr } from 'ngx-toastr';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { authInterceptor } from './app/services/auth.interceptor';
+import { provideNgxMask } from 'ngx-mask';
 
 bootstrapApplication(AppComponent, {
   ...appConfig,
@@ -16,7 +18,8 @@ bootstrapApplication(AppComponent, {
     closeButton: true,
     progressBar: true
   }),
-    provideHttpClient(),
+    provideNgxMask(),
+    provideHttpClient(withInterceptors([authInterceptor])),
   ],
 })
   .catch((err) => console.error(err));
