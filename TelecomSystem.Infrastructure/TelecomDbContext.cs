@@ -121,7 +121,7 @@ namespace TelecomSystem.Infrastructure
                                 DataEmissao = DateTime.UtcNow,
                                 DataVencimento = DateTime.UtcNow,
                                 ValorCobrado = 1000.00m * 12,
-                                Status = (StatusFatura)2,
+                                Status = (StatusFatura)1,
                             }
                         );
                     }
