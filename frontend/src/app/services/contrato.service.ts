@@ -71,7 +71,13 @@ export class ContratoService {
                     console.warn('Contrato não encontrada ao excluir.');
                     return of(null); // null = não encontrada
                 }
-
+                if (error.status === 400) {
+                    const mensagem =
+                        typeof error.error === 'string'
+                            ? error.error
+                            : error.error?.message || 'Erro ao excluir: dados relacionados.';
+                    throw mensagem; // Lança para ser tratado no componente
+                }
                 console.error('Erro ao excluir a contrato', error);
                 return of(false); // false = erro inesperado
             })

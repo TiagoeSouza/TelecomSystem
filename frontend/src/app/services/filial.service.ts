@@ -68,8 +68,13 @@ export class FilialService {
                     console.warn('Filial não encontrada ao excluir.');
                     return of(null); // null = não encontrada
                 }
-
-                console.error('Erro ao excluir a filial', error);
+                if (error.status === 400) {
+                    const mensagem =
+                        typeof error.error === 'string'
+                            ? error.error
+                            : error.error?.message || 'Erro ao excluir: dados relacionados.';
+                    throw mensagem; // Lança para ser tratado no componente
+                }
                 return of(false); // false = erro inesperado
             })
         );

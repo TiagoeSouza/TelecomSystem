@@ -19,7 +19,6 @@ import { PaginationComponent } from '../../../shared/pagination/pagination.compo
   imports: [CommonModule, RouterModule, PaginationComponent,
     FormsModule
   ],
-  styleUrl: 'operadora-list.component.css',
   templateUrl: './operadora-list.component.html',
 })
 
@@ -92,7 +91,11 @@ export class OperadoraListComponent implements OnInit {
           }),
           catchError((error) => {
             // Caso apresente erro no delete mostro mensagem
-            this.notify.error('Erro ao excluir a operadora.');
+            if (typeof error === 'string') {
+              this.notify.error(error); // Exibe a mensagem do backend
+            } else {
+              this.notify.error('Erro ao excluir.');
+            }
             return of(false); // Retorno falso indicando falha
           })
         ).subscribe((result) => {

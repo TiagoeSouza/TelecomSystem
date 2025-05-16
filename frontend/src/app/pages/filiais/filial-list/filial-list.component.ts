@@ -97,7 +97,11 @@ export class FilialListComponent implements OnInit {
           }),
           catchError((error) => {
             // Caso apresente erro no delete mostro mensagem
-            this.notify.error('Erro ao excluir a filial.');
+            if (typeof error === 'string') {
+              this.notify.error(error); // Exibe a mensagem do backend
+            } else {
+              this.notify.error('Erro ao excluir.');
+            }
             return of(false); // Retorno falso indicando falha
           })
         ).subscribe((result) => {
@@ -106,10 +110,10 @@ export class FilialListComponent implements OnInit {
             this.notify.success('Filial excluída com sucesso.');
           } else if (result === null) {
             // Caso a filial não tenha sido encontrada apresdento mensagem em tela
-            this.notify.error('Filial não encontrada.');
+            // this.notify.error('Filial não encontrada.');
           } else {
             // Caso erro inesperado
-            this.notify.error('Erro ao excluir a filial.');
+            // this.notify.error('Erro ao excluir a filial.');
           }
         });
       })

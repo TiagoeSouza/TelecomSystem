@@ -3,10 +3,13 @@ using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using TelecomSystem.API.BackgroundServices;
 using TelecomSystem.Application.Interfaces;
 using TelecomSystem.Application.Services;
 using TelecomSystem.Domain.Repositories;
+using TelecomSystem.Domain.Services;
 using TelecomSystem.Infrastructure;
+using TelecomSystem.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,6 +80,21 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
+// Registrar o serviço de email com parâmetros do appsettings
+builder.Services.AddTransient<IEmailSender>(sp =>
+    new MimeEmailSender(
+        builder.Configuration["Smtp:Host"],
+        int.Parse(builder.Configuration["Smtp:Port"]),
+        builder.Configuration["Smtp:User"],
+        builder.Configuration["Smtp:Pass"],
+        builder.Configuration["Smtp:Destinatario"]
+    )
+);
+// Registrar serviço de aplicação
+builder.Services.AddScoped<PlanoVencimentoNotificationService>();
+
+// Registrar o HostedService
+builder.Services.AddHostedService<PlanoVencimentoWorker>();
 
 
 var app = builder.Build();

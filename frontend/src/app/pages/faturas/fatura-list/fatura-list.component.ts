@@ -89,8 +89,11 @@ export class FaturaListComponent implements OnInit {
           }),
           catchError((error) => {
             // Caso apresente erro no delete mostro mensagem
-            this.notify.error('Erro ao excluir a fatura.');
-            return of(false); // Retorno falso indicando falha
+            if (typeof error === 'string') {
+              this.notify.error(error); // Exibe a mensagem do backend
+            } else {
+              this.notify.error('Erro ao excluir.');
+            } return of(false); // Retorno falso indicando falha
           })
         ).subscribe((result) => {
           if (result === true) {

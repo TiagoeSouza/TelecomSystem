@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TelecomSystem.Infrastructure;
@@ -11,9 +12,11 @@ using TelecomSystem.Infrastructure;
 namespace TelecomSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(TelecomDbContext))]
-    partial class TelecomDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250516203216_AjustarDeleteBehaviorGlobal")]
+    partial class AjustarDeleteBehaviorGlobal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

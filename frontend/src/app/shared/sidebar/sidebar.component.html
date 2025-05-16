@@ -32,13 +32,6 @@
         </li>
         <hr class="m-0" />
         <li>
-            <a routerLink="/filiais" class="nav-link text-white" routerLinkActive="active" style="border-radius: 0px;">
-                <i class="bi bi-buildings me-2"></i>
-                <span *ngIf="!isCollapsed">Filiais</span>
-            </a>
-        </li>
-        <hr class="m-0" />
-        <li>
             <a routerLink="/operadoras" class="nav-link text-white" routerLinkActive="active"
                 style="border-radius: 0px;">
                 <i class="bi bi-broadcast me-2"></i>
@@ -46,6 +39,14 @@
             </a>
         </li>
         <hr class="m-0" />
+        <li>
+            <a routerLink="/filiais" class="nav-link text-white" routerLinkActive="active" style="border-radius: 0px;">
+                <i class="bi bi-buildings me-2"></i>
+                <span *ngIf="!isCollapsed">Filiais</span>
+            </a>
+        </li>
+        <hr class="m-0" />
+
 
         <li>
             <a routerLink="/contratos" class="nav-link text-white" routerLinkActive="active"

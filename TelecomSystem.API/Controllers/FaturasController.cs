@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TelecomSystem.Application.Interfaces;
 using TelecomSystem.Domain.Entities;
 
@@ -59,10 +60,17 @@ namespace TelecomSystem.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var fatura = await _service.ObterPorIdAsync(id);
-            if (fatura == null) return NotFound();
-            await _service.ExcluirAsync(id);
-            return NoContent();
+            try
+            {
+                var fatura = await _service.ObterPorIdAsync(id);
+                if (fatura == null) return NotFound();
+                await _service.ExcluirAsync(id);
+                return NoContent();
+            }
+            catch (DbUpdateException ex) when (ex.InnerException != null)
+            {
+                return BadRequest("Não é possível excluir, pois o registro possui dados relacionados.");
+            }
         }
 
         [HttpGet("total-gasto-mes/{mes}/{ano}")]
