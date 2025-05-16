@@ -7,7 +7,7 @@ import { PaginationComponent } from '../../../shared/pagination/pagination.compo
 import { NotificationService } from '../../../shared/notification/notification.service';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { filter, switchMap, catchError, of } from 'rxjs';
-import { Contrato } from '../../../models/contrato.model';
+import { IContrato } from '../../../models/contrato.model';
 import { ContratoService } from '../../../services/contrato.service';
 
 
@@ -21,21 +21,21 @@ import { ContratoService } from '../../../services/contrato.service';
 })
 
 export class ContratoListComponent implements OnInit {
-  contratos: Contrato[] = [];
+  contratos: IContrato[] = [];
 
   loading = false;
   filtro = '';
 
   page = 1;
   pageSize = 5;
-  get contratosPaginados(): Contrato[] {
+  get contratosPaginados(): IContrato[] {
     const start = (this.page - 1) * this.pageSize;
     return this.contratosFiltrados.slice(start, start + this.pageSize);
   }
 
-  get contratosFiltrados(): Contrato[] {
+  get contratosFiltrados(): IContrato[] {
     return this.contratos.filter(ct =>
-      ct.plano.toLowerCase().includes(this.filtro.toLowerCase()) ||
+      ct.planoContratado.toLowerCase().includes(this.filtro.toLowerCase()) ||
       ct.filial.nome.toLowerCase().includes(this.filtro.toLowerCase())
     );
   }

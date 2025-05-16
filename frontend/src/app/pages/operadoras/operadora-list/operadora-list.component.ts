@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { get } from 'http';
 import { filter, switchMap, catchError, of } from 'rxjs';
-import { Operadora } from '../../../models/operadora.model';
+import { IOperadora } from '../../../models/operadora.model';
 import { OperadoraService } from '../../../services/operadora.service';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { NotificationService } from '../../../shared/notification/notification.service';
@@ -24,19 +24,19 @@ import { PaginationComponent } from '../../../shared/pagination/pagination.compo
 })
 
 export class OperadoraListComponent implements OnInit {
-  operadoras: Operadora[] = [];
+  operadoras: IOperadora[] = [];
 
   loading = false;
   filtro = '';
 
   page = 1;
   pageSize = 5;
-  get operadorasPaginadas(): Operadora[] {
+  get operadorasPaginadas(): IOperadora[] {
     const start = (this.page - 1) * this.pageSize;
     return this.operadorasFiltradas.slice(start, start + this.pageSize);
   }
 
-  get operadorasFiltradas(): Operadora[] {
+  get operadorasFiltradas(): IOperadora[] {
     return this.operadoras.filter(op =>
       op.nome.toLowerCase().includes(this.filtro.toLowerCase()) ||
       op.tipoServico.toLowerCase().includes(this.filtro.toLowerCase())

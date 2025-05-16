@@ -14,7 +14,7 @@ public class ContratoRepository : IContratoRepository
 
     public async Task<IEnumerable<Contrato>> ListarAsync()
     {
-        return await _context.Contratos.Include(c => c.Operadora).ToListAsync();
+        return await _context.Contratos.Include(c => c.Operadora).Include(c => c.Filial).ToListAsync();
     }
 
     public async Task<Contrato> ObterPorIdAsync(Guid id)
@@ -31,6 +31,16 @@ public class ContratoRepository : IContratoRepository
 
     public async Task AtualizarAsync(Contrato contrato)
     {
+        // Verifica se já existe uma entidade com esse ID sendo rastreada
+        var local = _context.Contratos.Local.FirstOrDefault(e => e.Id == contrato.Id);
+        if (local != null)
+        {
+            // Desanexa a instância local
+            _context.Entry(local).State = EntityState.Detached;
+        }
+
+        // Depois de desanexar, atualiza com a nova instância
+        // Isso garante que o EF Core não tente rastrear a mesma entidade duas vezes
         _context.Contratos.Update(contrato);
         await _context.SaveChangesAsync();
     }

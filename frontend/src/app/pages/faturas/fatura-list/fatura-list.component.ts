@@ -7,7 +7,7 @@ import { PaginationComponent } from '../../../shared/pagination/pagination.compo
 import { NotificationService } from '../../../shared/notification/notification.service';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { filter, switchMap, catchError, of } from 'rxjs';
-import { Fatura } from '../../../models/fatura.model';
+import { IFatura } from '../../../models/fatura.model';
 import { FaturaService } from '../../../services/fatura.service';
 
 
@@ -21,19 +21,19 @@ import { FaturaService } from '../../../services/fatura.service';
 })
 
 export class FaturaListComponent implements OnInit {
-  faturas: Fatura[] = [];
+  faturas: IFatura[] = [];
 
   loading = false;
   filtro = '';
 
   page = 1;
   pageSize = 5;
-  get faturasPaginadas(): Fatura[] {
+  get faturasPaginadas(): IFatura[] {
     const start = (this.page - 1) * this.pageSize;
     return this.faturasFiltradas.slice(start, start + this.pageSize);
   }
 
-  get faturasFiltradas(): Fatura[] {
+  get faturasFiltradas(): IFatura[] {
     return this.faturas.filter(fl =>
       fl.dataVencimento.toLowerCase().includes(this.filtro.toLowerCase()) ||
       fl.status.toLowerCase().includes(this.filtro.toLowerCase())

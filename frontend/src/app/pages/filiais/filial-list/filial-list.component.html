@@ -44,7 +44,7 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let fl of filiaisPaginadas">
-                        <td class="text-truncate">{{ fl.cnpj }}</td>
+                        <td class="text-truncate">{{ fl.cnpj | cnpjFormat }}</td>
                         <td class="text-truncate">{{ fl.nome }}</td>
                         <td class="text-truncate">
                             <a class="btn btn-sm btn-warning" [routerLink]="['/filiais', fl.id]"><i

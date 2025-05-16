@@ -1,1 +1,84 @@
-<p>fatura-form works!</p>
+<div class="container-fluid" *ngIf="!loading; else carregando">
+    <h3>{{ editId ? 'Editar' : 'Novo' }} Fatura</h3>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <input type="hidden" formControlName="id" />
+
+        <div class="mb-3">
+            <label for="contratoId" class="form-label">Contrato</label>
+            <select class="form-select" formControlName="contratoId">
+                <option [value]="''" selected>Selecione o contrato</option>
+                <option *ngFor="let contrato of contratos" [value]="contrato.id">
+                    {{ contrato.planoContratado }} - {{ contrato.valorMensal | currency:'BRL' }}
+                </option>
+            </select>
+            <div *ngIf="contratoSelecionado">
+                <p><strong>Plano:</strong> {{ contratoSelecionado.planoContratado }}</p>
+                <p><strong>Filial:</strong> {{ contratoSelecionado.filial.nome }} ({{
+                    (contratoSelecionado.filial.cnpj || '') | cnpjFormat
+                    }})</p>
+                <p><strong>Operadora:</strong> {{ contratoSelecionado.operadora.nome }}</p>
+            </div>
+            <div class="text-danger" *ngIf="form.get('contratoId')?.invalid && form.get('contratoId')?.touched">
+                <small>Contrato é obrigatório.</small>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <div class="mb-3">
+                    <label for="dataEmissao" class="form-label">Data de Emissão</label>
+                    <input type="date" class="form-control" formControlName="dataEmissao" [min]="dataEmissaoMinima" />
+                    <div class="text-danger"
+                        *ngIf="form.get('dataEmissao')?.invalid && form.get('dataEmissao')?.touched">
+                        <small>Data de emissão é obrigatória.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+
+                <div class="mb-3">
+                    <label for="dataVencimento" class="form-label">Data de Vencimento</label>
+                    <input type="date" class="form-control" formControlName="dataVencimento"
+                        [min]="dataVencimentoMinima" />
+                    <div class="text-danger"
+                        *ngIf="form.get('dataVencimento')?.invalid && form.get('dataVencimento')?.touched">
+                        <small>Data de vencimento é obrigatória.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mb-3">
+                    <label for="valorCobrado" class="form-label">Valor Cobrado</label>
+                    <input type="text" class="form-control" formControlName="valorCobrado" mask="separator.2"
+                        thousandSeparator="." decimalMarker="," />
+                    <div class="text-danger"
+                        *ngIf="form.get('valorCobrado')?.invalid && form.get('valorCobrado')?.touched">
+                        <small>Valor cobrado é obrigatório.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mb-3">
+                    <label for="status" class="form-label">Situação</label>
+                    <select class="form-select" formControlName="status">
+                        <option value="0">Paga</option>
+                        <option value="1">Pendente</option>
+                        <option value="2">Atrasada</option>
+                    </select>
+                    <div class="text-danger" *ngIf="form.get('status')?.invalid && form.get('status')?.touched">
+                        <small>Situação é obrigatório.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">
+            {{ editId ? 'Atualizar' : 'Cadastrar' }}
+        </button>
+        <a routerLink="/faturas" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+
+<ng-template #carregando>
+    <div class="text-center mt-4">Carregando...</div>
+</ng-template>

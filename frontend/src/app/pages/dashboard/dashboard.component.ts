@@ -1,21 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartConfiguration, ChartType, Chart } from 'chart.js';
 import { HttpClient } from '@angular/common/http';
-import { Fatura } from '../../models/fatura.model';
+import { IFatura } from '../../models/fatura.model';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { NgChartsModule } from 'ng2-charts';
+import { ApiService } from '../../services/ApiService';
+import { FaturaService } from '../../services/fatura.service';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+
+// import { NgModule } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { FormsModule } from '@angular/forms';
+// import { DashboardComponent } from './dashboard.component';
+// ``````typescript
+//   imports: [
+//     CommonModule,
+//     FormsModule
+//   ],
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'], // Correção para o caminho de styleUrls
   standalone: true,
-  imports: [CommonModule, CurrencyPipe, NgChartsModule],
+  imports: [CommonModule, CurrencyPipe, NgChartsModule, FormsModule],
 })
 export class DashboardComponent implements OnInit {
-  faturas: Fatura[] = [];
+  faturas: IFatura[] = [];
   totalFaturas = 0;
   totalFaturado = 0;
+  totaisPorFilial: any[] = [];
+  mesesAnos: { value: string; label: string }[] = [];
+  mesAnoSelecionado: string = '';
 
   // Dados do gráfico de pizza
   pieChartData: ChartConfiguration<'pie'>['data'] = {
@@ -36,15 +54,52 @@ export class DashboardComponent implements OnInit {
     ]
   };
   barChartType: ChartType = 'bar';
+  preencherMesesAnos() {
+    const hoje = new Date();
+    const mesesNome = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
 
-  constructor(private http: HttpClient) { }
+    for (let i = 0; i < 12; i++) {
+      const data = new Date(hoje.getFullYear(), hoje.getMonth() + i, 1);
+      const mes = data.getMonth() + 1; // 1-12
+      const ano = data.getFullYear();
+
+      const label = `${mesesNome[data.getMonth()]}/${ano}`;
+      // valor no formato "MM/YYYY", ex: "05/2025"
+      const value = `${mes.toString().padStart(2, '0')}/${ano}`;
+
+      this.mesesAnos.push({ label, value });
+    }
+  }
+
+  carregarTotais() {
+    if (!this.mesAnoSelecionado) return;
+
+    // extrair mês e ano do valor selecionado "MM/YYYY"
+    const [mesStr, anoStr] = this.mesAnoSelecionado.split('/');
+    const mes = parseInt(mesStr, 10);
+    const ano = parseInt(anoStr, 10);
+
+    this.service.getTotaisGastoPorMes(mes, ano).subscribe((data) => {
+      this.totaisPorFilial = data;
+    });
+  }
+
+  constructor(private service: FaturaService) { }
 
   ngOnInit() {
     console.log('DashboardComponent initialized');
+    this.preencherMesesAnos();
+    this.mesAnoSelecionado = this.mesesAnos[0]?.value || '';
+    this.carregarTotais();
     // Carregar os dados das faturas do mock JSON
-    this.http.get<Fatura[]>('assets/mocks/faturas.json').subscribe(data => {
+    // this.http.get<IFatura[]>('assets/mocks/faturas.json').subscribe(data => {
+    //   this.faturas = data;
+    //   console.log('Faturas loaded:', this.faturas);
+    // })
+
+    this.service.getAll().subscribe(data => {
       this.faturas = data;
-      console.log('Faturas loaded:', this.faturas);
+      //   console.log('Faturas loaded:', this.faturas);
     }).add(() => {
       console.log('Faturas loading completed');
       this.processarDados();

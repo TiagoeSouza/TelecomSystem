@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NotificationService } from '../../../shared/notification/notification.service';
 import { NgxMaskDirective } from 'ngx-mask';
 import { FilialService } from '../../../services/filial.service';
-import { Filial } from '../../../models/filial.model';
+import { IFilial } from '../../../models/filial.model';
 import { validarCnpj } from '../../../services/helper.service';
 
 @Component({
@@ -56,7 +56,7 @@ export class FilialFormComponent implements OnInit {
 
     this.loading = true;
 
-    const filialData = this.form.value as Omit<Filial, 'id'>;
+    const filialData = this.form.value as Omit<IFilial, 'id'>;
 
     const obs = this.editId
       ? this.service.update(this.editId, filialData)

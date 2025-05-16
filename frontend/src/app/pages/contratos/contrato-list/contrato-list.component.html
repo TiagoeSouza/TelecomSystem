@@ -46,12 +46,12 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let ct of contratosPaginados">
-                        <td class="text-truncate">{{ ct.plano }}</td>
+                        <td class="text-truncate">{{ ct.planoContratado }}</td>
                         <td class="text-truncate">{{ ct.filial.nome }}</td>
                         <td class="text-truncate">{{ ct.valorMensal | currency: 'BRL' }}</td>
                         <td class="text-truncate">
-                            <span *ngIf="ct.status === 'Ativo'" class="badge bg-success">Ativo</span>
-                            <span *ngIf="ct.status === 'Inativo'" class="badge bg-danger">Inativo</span>
+                            <span *ngIf="ct.status === 'A'" class="badge bg-success">Ativo</span>
+                            <span *ngIf="ct.status === 'I'" class="badge bg-danger">Inativo</span>
                         </td>
                         <td class="text-truncate">
                             <a class="btn btn-sm btn-warning" [routerLink]="['/contratos', ct.id]"><i

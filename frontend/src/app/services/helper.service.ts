@@ -4,6 +4,11 @@ export function generateGUID() {
     return crypto.randomUUID();
 }
 
+export function formatarCNPJ(cnpj: string): string {
+    const clean = cnpj.replace(/\D/g, '');
+    return clean.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
+}
+
 export function validarCnpj(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
         const cnpj = (control.value || '').replace(/\D/g, '');

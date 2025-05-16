@@ -1,1 +1,108 @@
-<p>contrato-form works!</p>
+<div class="container-fluid" *ngIf="!loading; else carregando">
+    <h3>{{ editId ? 'Editar' : 'Novo' }} Contrato</h3>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <input type="hidden" formControlName="id" />
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <div class="mb-3">
+                    <div [formGroupName]="'filial'">
+
+                        <label class="form-label">Filial</label>
+                        <select class="form-select" formControlName="id">
+                            <option [value]="''" disabled selected>Selecione a filial</option>
+                            <option *ngFor="let filial of filiais" [value]="filial.id">{{ filial.nome }}</option>
+                        </select>
+                        <div class="text-danger"
+                            *ngIf="form.get('filial.id')?.invalid && form.get('filial.id')?.touched">
+                            <small>Filial é obrigatória.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="mb-3">
+                    <div [formGroupName]="'operadora'">
+
+                        <label class="form-label">Operadora</label>
+                        <select class="form-select" formControlName="id">
+                            <option [value]="''" disabled selected>Selecione a operadora</option>
+                            <option *ngFor="let operadora of operadoras" [value]="operadora.id">{{ operadora.nome }}
+                            </option>
+                        </select>
+                        <div class="text-danger"
+                            *ngIf="form.get('operadora.id')?.invalid && form.get('operadora.id')?.touched">
+                            <small>Operadora é obrigatória.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mb-3">
+            <label class="form-label">Plano Contratado</label>
+            <input type="text" class="form-control" formControlName="planoContratado" />
+            <div class="text-danger"
+                *ngIf="form.get('planoContratado')?.invalid && form.get('planoContratado')?.touched">
+                <small>Plano contratado é obrigatório.</small>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Data de Início</label>
+                    <input type="date" class="form-control" formControlName="dataInicio" [min]="dtInicioMinima" />
+                    <div class="text-danger" *ngIf="form.get('dataInicio')?.invalid && form.get('dataInicio')?.touched">
+                        <small>Data de início é obrigatória.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Data de Vencimento</label>
+                    <input type="date" class="form-control" formControlName="dataVencimento"
+                        [min]="dtVencimentoMinima" />
+                    <div class="text-danger"
+                        *ngIf="form.get('dataVencimento')?.invalid && form.get('dataVencimento')?.touched">
+                        <small>Data de vencimento é obrigatória.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Valor Mensal</label>
+                    <input type="text" class="form-control" formControlName="valorMensal" mask="separator.2"
+                        thousandSeparator="." decimalMarker="," />
+                    <div class="text-danger"
+                        *ngIf="form.get('valorMensal')?.invalid && form.get('valorMensal')?.touched">
+                        <small>Valor mensal é obrigatório.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Situação</label>
+                    <select class="form-select" formControlName="status">
+                        <option [value]="'A'">Ativo</option>
+                        <option [value]="'I'">Inativo</option>
+                    </select>
+                    <div class="text-danger" *ngIf="form.get('status')?.invalid && form.get('status')?.touched">
+                        <small>Situação é obrigatório.</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            {{ editId ? 'Atualizar' : 'Cadastrar' }}
+        </button>
+        <a routerLink="/contratos" class="btn btn-secondary ms-2">Cancelar</a>
+    </form>
+</div>
+
+<ng-template #carregando>
+    <div class="text-center mt-4">Carregando...</div>
+</ng-template>

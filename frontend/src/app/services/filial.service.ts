@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, delay, map, tap } from 'rxjs/operators';
-import { Filial } from '../models/filial.model';
+import { IFilial } from '../models/filial.model';
 import { ApiService } from './ApiService';
 import { generateGUID } from './helper.service';
 
 @Injectable({ providedIn: 'root' })
 export class FilialService {
-    private filiais: Filial[] = [];
+    private filiais: IFilial[] = [];
     private loaded = false;
 
     constructor(private apiService: ApiService) { }
 
-    private loadData(): Observable<Filial[]> {
-        return this.apiService.get<Filial[]>('Filiais').pipe(
+    private loadData(): Observable<IFilial[]> {
+        return this.apiService.get<IFilial[]>('Filiais').pipe(
             tap(data => {
                 this.filiais = data;
                 this.loaded = true;
@@ -22,29 +22,32 @@ export class FilialService {
 
     }
 
-    getAll(force = false): Observable<Filial[]> {
+    getAll(force = false): Observable<IFilial[]> {
         if (this.loaded && !force) {
             return of([...this.filiais]);
         }
         return this.loadData();
     }
 
-    getById(id: string): Observable<Filial | undefined> {
-        const response = this.apiService.get<Filial>(`Filiais/${id}`).pipe(
+    getById(id: string): Observable<IFilial | undefined> {
+        const response = this.apiService.get<IFilial>(`Filiais/${id}`).pipe(
             catchError(() => of(undefined))
         );
         console.log('getById', response);
         return response;
     }
 
-    add(data: Omit<Filial, 'id'>): Observable<Filial> {
-        const nova = { id: generateGUID(), ...data };
-        return this.apiService.post<Filial>('Filiais', nova);
+    add(data: Omit<IFilial, 'id'>): Observable<IFilial> {
+        const nova = {
+            ...data,
+            id: generateGUID()
+        };
+        return this.apiService.post<IFilial>('Filiais', nova);
     }
 
 
-    update(id: string, data: Omit<Filial, 'id'>): Observable<Filial | null> {
-        return this.apiService.put<Filial>(`Filiais/${id}`, data).pipe(
+    update(id: string, data: Omit<IFilial, 'id'>): Observable<IFilial | null> {
+        return this.apiService.put<IFilial>(`Filiais/${id}`, data).pipe(
             catchError((error) => {
                 if (error.status === 404) {
                     console.warn('Filial não encontrada ao atualizar.');

@@ -3,18 +3,19 @@ import { Observable, of } from 'rxjs';
 import { catchError, delay, map, tap } from 'rxjs/operators';
 import { ApiService } from './ApiService';
 import { generateGUID } from './helper.service';
-import { Contrato } from '../models/contrato.model';
+import { IContrato } from '../models/contrato.model';
 
 @Injectable({ providedIn: 'root' })
 export class ContratoService {
-    private contratos: Contrato[] = [];
+    private contratos: IContrato[] = [];
     private loaded = false;
 
     constructor(private apiService: ApiService) { }
 
-    private loadData(): Observable<Contrato[]> {
-        return this.apiService.get<Contrato[]>('Contratos').pipe(
+    private loadData(): Observable<IContrato[]> {
+        return this.apiService.get<IContrato[]>('Contratos').pipe(
             tap(data => {
+                console.log('loadData', data);
                 this.contratos = data;
                 this.loaded = true;
             })
@@ -22,29 +23,34 @@ export class ContratoService {
 
     }
 
-    getAll(force = false): Observable<Contrato[]> {
+    getAll(force = false): Observable<IContrato[]> {
         if (this.loaded && !force) {
             return of([...this.contratos]);
         }
         return this.loadData();
     }
 
-    getById(id: string): Observable<Contrato | undefined> {
-        const response = this.apiService.get<Contrato>(`Contratos/${id}`).pipe(
+    getById(id: string): Observable<IContrato | undefined> {
+        const response = this.apiService.get<IContrato>(`Contratos/${id}`).pipe(
             catchError(() => of(undefined))
         );
         console.log('getById', response);
         return response;
     }
 
-    add(data: Omit<Contrato, 'id'>): Observable<Contrato> {
-        const nova = { id: generateGUID(), ...data };
-        return this.apiService.post<Contrato>('Contratos', nova);
+    add(data: Omit<IContrato, 'id'>): Observable<IContrato> {
+        console.log('add', data);
+        const nova = {
+            ...data,
+            id: generateGUID(),
+        };
+        console.log('nova', nova);
+        return this.apiService.post<IContrato>('Contratos', nova);
     }
 
 
-    update(id: string, data: Omit<Contrato, 'id'>): Observable<Contrato | null> {
-        return this.apiService.put<Contrato>(`Contratos/${id}`, data).pipe(
+    update(id: string, data: Omit<IContrato, 'id'>): Observable<IContrato | null> {
+        return this.apiService.put<IContrato>(`Contratos/${id}`, data).pipe(
             catchError((error) => {
                 if (error.status === 404) {
                     console.warn('Contrato não encontrada ao atualizar.');

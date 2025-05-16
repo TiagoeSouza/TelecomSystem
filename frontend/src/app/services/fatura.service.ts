@@ -2,19 +2,19 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, delay, map, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Fatura } from '../models/fatura.model';
+import { IFatura } from '../models/fatura.model';
 import { ApiService } from './ApiService';
 import { generateGUID } from './helper.service';
 
 @Injectable({ providedIn: 'root' })
 export class FaturaService {
-    private faturas: Fatura[] = [];
+    private faturas: IFatura[] = [];
     private loaded = false;
 
     constructor(private apiService: ApiService) { }
 
-    private loadData(): Observable<Fatura[]> {
-        return this.apiService.get<Fatura[]>('Faturas').pipe(
+    private loadData(): Observable<IFatura[]> {
+        return this.apiService.get<IFatura[]>('Faturas').pipe(
             tap(data => {
                 this.faturas = data;
                 this.loaded = true;
@@ -24,29 +24,34 @@ export class FaturaService {
     }
 
 
-    getAll(force = false): Observable<Fatura[]> {
+    getAll(force = false): Observable<IFatura[]> {
         if (this.loaded && !force) {
             return of([...this.faturas]);
         }
         return this.loadData();
     }
 
-    getById(id: string): Observable<Fatura | undefined> {
-        const response = this.apiService.get<Fatura>(`Faturas/${id}`).pipe(
+    getById(id: string): Observable<IFatura | undefined> {
+        const response = this.apiService.get<IFatura>(`Faturas/${id}`).pipe(
             catchError(() => of(undefined))
         );
         console.log('getById', response);
         return response;
     }
 
-    add(data: Omit<Fatura, 'id'>): Observable<Fatura> {
-        const nova = { id: generateGUID(), ...data };
-        return this.apiService.post<Fatura>('Faturas', nova);
+    add(data: Omit<IFatura, 'id'>): Observable<IFatura> {
+        const nova = {
+            ...data,
+            id: generateGUID(),
+            status: Number(data.status),
+        };
+        console.log('nova', nova);
+        return this.apiService.post<IFatura>('Faturas', nova);
     }
 
 
-    update(id: string, data: Omit<Fatura, 'id'>): Observable<Fatura | null> {
-        return this.apiService.put<Fatura>(`Faturas/${id}`, data).pipe(
+    update(id: string, data: Omit<IFatura, 'id'>): Observable<IFatura | null> {
+        return this.apiService.put<IFatura>(`Faturas/${id}`, data).pipe(
             catchError((error) => {
                 if (error.status === 404) {
                     console.warn('Fatura não encontrada ao atualizar.');
@@ -70,6 +75,15 @@ export class FaturaService {
 
                 console.error('Erro ao excluir a fatura', error);
                 return of(false); // false = erro inesperado
+            })
+        );
+    }
+
+    getTotaisGastoPorMes(mes: number, ano: number): Observable<any[]> {
+        return this.apiService.get<any[]>(`Faturas/total-gasto-mes/${mes}/${ano}`).pipe(
+            catchError(error => {
+                console.error('Erro ao buscar totais de gasto por mês:', error);
+                return of([]);
             })
         );
     }

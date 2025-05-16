@@ -7,37 +7,45 @@ import { PaginationComponent } from '../../../shared/pagination/pagination.compo
 import { NotificationService } from '../../../shared/notification/notification.service';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { filter, switchMap, catchError, of } from 'rxjs';
-import { Filial } from '../../../models/filial.model';
+import { IFilial } from '../../../models/filial.model';
 import { FilialService } from '../../../services/filial.service';
+import { CnpjFormatPipe } from "../../../shared/pipes/cnpj-format.pipe";
+import { formatarCNPJ } from '../../../services/helper.service';
 
 
 @Component({
   selector: 'app-filial-list',
   standalone: true,
   imports: [CommonModule, RouterModule, PaginationComponent,
-    FormsModule
-  ],
+    FormsModule, CnpjFormatPipe],
   templateUrl: './filial-list.component.html',
 })
 
 export class FilialListComponent implements OnInit {
-  filiais: Filial[] = [];
+  filiais: IFilial[] = [];
 
   loading = false;
   filtro = '';
 
   page = 1;
   pageSize = 5;
-  get filiaisPaginadas(): Filial[] {
+  get filiaisPaginadas(): IFilial[] {
     const start = (this.page - 1) * this.pageSize;
     return this.filiaisFiltradas.slice(start, start + this.pageSize);
   }
 
-  get filiaisFiltradas(): Filial[] {
-    return this.filiais.filter(fl =>
-      fl.cnpj.toLowerCase().includes(this.filtro.toLowerCase()) ||
-      fl.nome.toLowerCase().includes(this.filtro.toLowerCase())
-    );
+  get filiaisFiltradas(): IFilial[] {
+
+
+    return this.filiais.filter(fl => {
+      const cnpjFormatado = formatarCNPJ(fl.cnpj);
+
+      return (
+        fl.cnpj.toLowerCase().includes(this.filtro.toLowerCase()) ||
+        cnpjFormatado.toLowerCase().includes(this.filtro.toLowerCase()) ||
+        fl.nome.toLowerCase().includes(this.filtro.toLowerCase())
+      );
+    });
   }
   constructor(private service: FilialService, private modalService: NgbModal, private notify: NotificationService) { }
 

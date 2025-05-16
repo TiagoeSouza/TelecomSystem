@@ -70,8 +70,8 @@ const routes: Routes = [
 
             // Rotas para o CRUD de Faturas
             { path: 'faturas', component: FaturaListComponent },
-            { path: 'faturas/novo', component: ContratoFormComponent },
-            { path: 'faturas/:id', component: ContratoFormComponent },
+            { path: 'faturas/novo', component: FaturaFormComponent },
+            { path: 'faturas/:id', component: FaturaFormComponent },
 
         ],
     },

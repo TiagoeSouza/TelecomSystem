@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.EntityFrameworkCore;
 using TelecomSystem.Domain.Entities;
 using TelecomSystem.Domain.Repositories;
@@ -31,7 +32,17 @@ public class FaturaRepository : IFaturaRepository
 
     public async Task AtualizarAsync(Fatura fatura)
     {
-        _context.Set<Fatura>().Update(fatura);
+        // Verifica se já existe uma entidade com esse ID sendo rastreada
+        var local = _context.Faturas.Local.FirstOrDefault(e => e.Id == fatura.Id);
+        if (local != null)
+        {
+            // Desanexa a instância local
+            _context.Entry(local).State = EntityState.Detached;
+        }
+
+        // Depois de desanexar, atualiza com a nova instância
+        // Isso garante que o EF Core não tente rastrear a mesma entidade duas vezes
+        _context.Faturas.Update(fatura);
         await _context.SaveChangesAsync();
     }
 
@@ -45,10 +56,18 @@ public class FaturaRepository : IFaturaRepository
         }
     }
 
-    public async Task<decimal> TotalGastoNoMesAsync(int mes, int ano)
+    public async Task<Object> TotalGastoNoMesAsync(int mes, int ano)
     {
         return await _context.Set<Fatura>()
-            .Where(f => f.DataEmissao.Month == mes && f.DataEmissao.Year == ano)
-            .SumAsync(f => f.ValorCobrado);
+            .Where(f => f.Contrato != null && f.Contrato.Filial != null && f.DataEmissao.Month == mes && f.DataEmissao.Year == ano)
+            .GroupBy(x => new { Filial = x.Contrato.FilialId, StatusFatura = x.Status, Mes = x.DataEmissao.Month, Ano = x.DataEmissao.Year })
+            .Select(g => new
+            {
+                filialId = g.Key.Filial,
+                mesAno = $"{g.Key.Mes:D2}/{g.Key.Ano}",
+                status = g.Key.StatusFatura,
+                filialNome = g.Select(x => x.Contrato != null && x.Contrato.Filial != null ? x.Contrato.Filial.Nome : null).FirstOrDefault(),
+                total = g.Sum(x => x.ValorCobrado)
+            }).ToListAsync();
     }
 }

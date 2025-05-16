@@ -1,4 +1,56 @@
 <div class="container-fluid">
+    <!-- Card Total Gasto por Filial -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow rounded h-100">
+                <div class="card-body">
+                    <h3 class="card-title">Total Gasto Mês/Ano por Filial</h3>
+                    <div class="col-2 mx-auto">
+                        <label for="selectMesAno" class="form-label">Competência: </label>
+                        <select id="selectMesAno" class="form-select mb-2" [(ngModel)]="mesAnoSelecionado"
+                            (change)="carregarTotais()">
+                            <option *ngFor="let item of mesesAnos" [value]="item.value">{{ item.label }}</option>
+                        </select>
+                    </div>
+
+                    <div *ngIf="totaisPorFilial?.length; else nenhumRegistro">
+                        <div class="table-responsive" [ngStyle]="{
+      'max-height': totaisPorFilial.length > 5 ? '300px' : 'auto',
+      'overflow-y': totaisPorFilial.length > 5 ? 'auto' : 'unset'
+    }">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th class="bg-primary text-white">Filial</th>
+                                        <th class="bg-primary text-white">Situação</th>
+                                        <th class="bg-primary text-white">Mês/Ano</th>
+                                        <th class="bg-primary text-white">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of totaisPorFilial" class="text-truncate" [ngClass]="{
+                                            'table-success': item.status === 'Paga',
+                                            'table-warning': item.status === 'Pendente',
+                                            'table-danger': item.status === 'Atrasada'
+                                        }">
+                                        <td>{{ item.filialNome || 'N/A' }}</td>
+                                        <td>{{ item.status }}</td>
+                                        <td>{{ item.mesAno }}</td>
+                                        <td>{{ item.total | currency: 'BRL' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <ng-template #nenhumRegistro>
+                        <p class="text-muted">Nenhum dado disponível para este mês.</p>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <!-- Card Total de Faturas -->
         <div class="col-12 col-md-6 mt-2">

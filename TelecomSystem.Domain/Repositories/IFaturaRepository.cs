@@ -9,6 +9,6 @@ namespace TelecomSystem.Domain.Repositories
         Task CriarAsync(Fatura fatura);
         Task AtualizarAsync(Fatura fatura);
         Task ExcluirAsync(Guid id);
-        Task<decimal> TotalGastoNoMesAsync(int mes, int ano);
+        Task<Object> TotalGastoNoMesAsync(int mes, int ano);
     }
 }

@@ -2,26 +2,26 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, delay, map, tap } from 'rxjs/operators';
-import { Operadora } from '../models/operadora.model';
+import { IOperadora } from '../models/operadora.model';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from './ApiService';
 import { generateGUID } from './helper.service';
 
 @Injectable({ providedIn: 'root' })
 export class OperadoraService {
-    private operadoras: Operadora[] = [];
+    private operadoras: IOperadora[] = [];
     private loaded = false;
 
     constructor(private apiService: ApiService) { }
 
-    private loadMock(): Observable<Operadora[]> {
+    private loadMock(): Observable<IOperadora[]> {
         // return this.http.get<Operadora[]>('assets/mocks/operadoras.json').pipe(
         //     tap(data => {
         //         this.operadoras = data;
         //         this.loaded = true;
         //     })
         // );
-        return this.apiService.get<Operadora[]>('Operadoras').pipe(
+        return this.apiService.get<IOperadora[]>('Operadoras').pipe(
             tap(data => {
                 this.operadoras = data;
                 this.loaded = true;
@@ -30,29 +30,33 @@ export class OperadoraService {
 
     }
 
-    getAll(force = false): Observable<Operadora[]> {
+    getAll(force = false): Observable<IOperadora[]> {
         if (this.loaded && !force) {
             return of([...this.operadoras]);
         }
         return this.loadMock(); // que chama o backend
     }
 
-    getById(id: string): Observable<Operadora | undefined> {
-        const response = this.apiService.get<Operadora>(`Operadoras/${id}`).pipe(
+    getById(id: string): Observable<IOperadora | undefined> {
+        const response = this.apiService.get<IOperadora>(`Operadoras/${id}`).pipe(
             catchError(() => of(undefined))
         );
         console.log('getById', response);
         return response;
     }
 
-    add(data: Omit<Operadora, 'id'>): Observable<Operadora> {
-        const nova = { id: generateGUID(), ...data };
-        return this.apiService.post<Operadora>('Operadoras', nova);
+    add(data: Omit<IOperadora, 'id'>): Observable<IOperadora> {
+        const nova = {
+            ...data,
+            id: generateGUID()
+        };
+        console.log('nova', nova);
+        return this.apiService.post<IOperadora>('Operadoras', nova);
     }
 
 
-    update(id: string, data: Omit<Operadora, 'id'>): Observable<Operadora | null> {
-        return this.apiService.put<Operadora>(`Operadoras/${id}`, data).pipe(
+    update(id: string, data: Omit<IOperadora, 'id'>): Observable<IOperadora | null> {
+        return this.apiService.put<IOperadora>(`Operadoras/${id}`, data).pipe(
             catchError((error) => {
                 if (error.status === 404) {
                     console.warn('Operadora não encontrada ao atualizar.');

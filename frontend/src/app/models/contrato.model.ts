@@ -1,16 +1,15 @@
-export interface Contrato {
+import { IFilial } from "./filial.model";
+import { IOperadora } from "./operadora.model";
+
+export interface IContrato {
     id: string;
-    filial: Filial;
-    operadora: string;
-    plano: string;
+    filialId: string;
+    filial: IFilial;
+    operadoraId: string;
+    operadora: IOperadora;
+    planoContratado: string;
     dataInicio: string;
     dataVencimento: string;
     valorMensal: number;
-    status: 'Ativo' | 'Inativo';
-}
-
-export interface Filial {
-    id: string;
-    cnpj: string; // Formato: XX.XXX.XXX/XXXX-XX
-    nome: string;
+    status: 'A' | 'I';
 }

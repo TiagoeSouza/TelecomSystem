@@ -9,6 +9,6 @@ namespace TelecomSystem.Application.Interfaces
         Task CriarAsync(Fatura fatura);
         Task AtualizarAsync(Fatura fatura);
         Task ExcluirAsync(Guid id);
-        Task<decimal> ObterTotalGastoNoMesAsync(int mes, int ano);
+        Task<Object> ObterTotalGastoNoMesAsync(int mes, int ano);
     }
 }

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { OperadoraService } from '../../../services/operadora.service';
-import { Operadora } from '../../../models/operadora.model';
+import { IOperadora } from '../../../models/operadora.model';
 import { NotificationService } from '../../../shared/notification/notification.service';
 
 @Component({
@@ -28,16 +28,18 @@ export class OperadoraFormComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    this.editId = idParam;
     this.form = this.fb.group({
-      id: ['', [Validators.required]],
+      id: [idParam ?? ''],
       nome: ['', [Validators.required, Validators.minLength(3)]],
       tipoServico: ['', Validators.required],
       contatoSuporte: ['', [Validators.required, Validators.minLength(5)]]
     });
 
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
-      this.editId = idParam;
+    if (this.editId) {
+      this.form.get('id')?.addValidators(Validators.required);
+
       this.loading = true;
       this.service.getById(this.editId).subscribe((operadora) => {
         if (operadora) {
@@ -49,6 +51,9 @@ export class OperadoraFormComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log('Formulário enviado:', this.form.value);
+    console.log('Formulário válido:', this.form.valid);
+
     if (this.form.invalid) {
       this.form.markAllAsTouched(); // exibe erros
       return;
@@ -56,7 +61,7 @@ export class OperadoraFormComponent implements OnInit {
 
     this.loading = true;
 
-    const operadoraData = this.form.value as Omit<Operadora, 'id'>;
+    const operadoraData = this.form.value as Omit<IOperadora, 'id'>;
 
     const obs = this.editId
       ? this.service.update(this.editId, operadoraData)
