@@ -175,10 +175,16 @@ TelecomSystem/
 ![image](https://github.com/user-attachments/assets/cd8cd862-930f-4258-90d6-55d3286cfc99)
 
 📊 Dashboard
+![image](https://github.com/user-attachments/assets/d944551c-0035-4048-a4aa-c58018bd04d9)
+
+📡 Operadoras
+![image](https://github.com/user-attachments/assets/677fd390-122e-4c85-ab65-146db93dfa13)
 
 📁 Cadastro de Contrato
+![image](https://github.com/user-attachments/assets/9ac0e295-18ab-40ea-916d-6a1f42945031)
 
 🧾 Listagem de Faturas
+![image](https://github.com/user-attachments/assets/2929aa61-1315-4876-b855-b3286abddd23)
 
 ---
 
